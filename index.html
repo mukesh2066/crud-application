@@ -3,32 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> CRUD Application</title>
+    <title>CRUD Application</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .container-post, .container-read, .container-update, .container-delete {
+            flex: 1 1 calc(50% - 20px);
+            border: 1px solid #ccc;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <!-- POST Method Section -->
         <div class="container-post">
             <p class="result"></p>
-            <h1>Enter the Data</h1>
+            <h1 class="bg-img">Enter the Data</h1>
             <input type="text" class="name" placeholder="Name"/>
             <input type="number" class="age" placeholder="Age"/>
-            
             <input type="text" class="city" placeholder="City"/>
             <button type="button" class="submit">Submit</button>
         </div>
-
-        <!-- GET Method Section -->
-        <div>
-            <h1>Read the Data</h1>
+        <div class="container-read">
+            <h1 class="bg-img">Read the Data</h1>
             <button type="button" class="get">Fetch Data</button>
-            <p class="get-result"></p>
+            <table class="data-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>City</th>
+                    </tr>
+                </thead>
+                <tbody class="data-table-body">
+                </tbody>
+            </table>
         </div>
-
-        <!-- PUT Method Section -->
-        <div>
-            <h1>Updating the data</h1>
+        <div class="container-update">
+            <h1 class="bg-img">Updating the Data</h1>
             <input type="text" class="update-id" placeholder="ID to update"/>
             <input type="text" class="update-name" placeholder="New Name"/>
             <input type="number" class="update-age" placeholder="New Age"/>
@@ -36,18 +67,14 @@
             <button type="button" class="update">Update</button>
             <p class="update-result"></p>
         </div>
-
-        <!-- DELETE Method Section -->
-        <div>
-            <h1>DELETE Method</h1>
+        <div class="container-delete">
+            <h1 class="bg-img">Delete the Data</h1>
             <input type="text" class="delete-id" placeholder="ID to delete"/>
             <button type="button" class="delete">Delete</button>
             <p class="delete-result"></p>
         </div>
     </div>
-
     <script>
-        // POST Method
         document.querySelector('.submit').addEventListener('click', async () => {
             const name = document.querySelector('.name').value;
             const age = document.querySelector('.age').value;
@@ -59,24 +86,33 @@
                     body: JSON.stringify({ name, age , city }),
                 });
                 const result = await res.json();
-                document.querySelector('.result').innerText = result.message || "Data Saved Successfully!";
+                document.querySelector('.result').innerText = result.message || "POST request successful!";
             } catch (error) {
                 document.querySelector('.result').innerText = "Error: " + error.message;
             }
         });
 
-        // GET Method
         document.querySelector('.get').addEventListener('click', async () => {
             try {
                 const res = await fetch('http://localhost:5500/get');
                 const result = await res.json();
-                document.querySelector('.get-result').innerText = JSON.stringify(result, null, 2);
+                const tableBody = document.querySelector('.data-table-body');
+                tableBody.innerHTML = '';
+                result.forEach(item => {
+                    const row = `<tr>
+                                    <td>${item._id}</td>
+                                    <td>${item.name}</td>
+                                    <td>${item.age}</td>
+                                    <td>${item.city}</td>
+                                 </tr>`;
+                    tableBody.insertAdjacentHTML('beforeend', row);
+                });
+                document.querySelector('.data-table').style.display = 'table';
             } catch (error) {
                 document.querySelector('.get-result').innerText = "Error: " + error.message;
             }
         });
 
-        // PUT Method
         document.querySelector('.update').addEventListener('click', async () => {
             const id = document.querySelector('.update-id').value;
             const newName = document.querySelector('.update-name').value;
@@ -86,16 +122,15 @@
                 const res = await fetch(`http://localhost:5500/update/${id}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name: newName , age: newAge, city: newCity}),
+                    body: JSON.stringify({ name: newName , age: newAge,city: newCity}),
                 });
                 const result = await res.json();
-                document.querySelector('.update-result').innerText = result.message || "Update successfully!";
+                document.querySelector('.update-result').innerText = result.message || "Update successful!";
             } catch (error) {
                 document.querySelector('.update-result').innerText = "Error: " + error.message;
             }
         });
 
-        // DELETE Method
         document.querySelector('.delete').addEventListener('click', async () => {
             const id = document.querySelector('.delete-id').value;
             try {
@@ -103,7 +138,7 @@
                     method: "DELETE",
                 });
                 const result = await res.json();
-                document.querySelector('.delete-result').innerText = result.message || "Deleted successful!";
+                document.querySelector('.delete-result').innerText = result.message || "Delete successful!";
             } catch (error) {
                 document.querySelector('.delete-result').innerText = "Error: " + error.message;
             }
