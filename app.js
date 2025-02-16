@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors());
 app.set('view engine','ejs')
 
-mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/info', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const PORT = 5500;
 
