@@ -1,0 +1,90 @@
+/* style.css */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+
+h1 {
+    color: #444;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: calc(100% - 24px);
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border: 1px solid #ff7e5f;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    background-color: #ff7e5f;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #e66959;
+}
+
+p.result, p.get-result, p.update-result, p.delete-result {
+    color: #28a745;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.container-post, .get, .update, .delete {
+    margin-bottom: 40px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.container-post:last-child,
+.get:last-child,
+.update:last-child,
+.delete:last-child {
+    border: none;
+    padding-top: 0;
+}
+
+.container-post p, .get p, .update p, .delete p {
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .container {
+        width: 60%;
+    }
+}
